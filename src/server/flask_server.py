@@ -17,10 +17,7 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 @app.route('/upload', methods=['POST'])
 def getImageFile() -> jsonify:
-    """
-    走行体から、画像ファイルを取得するための関数
-    """
-
+    """走行体から、画像ファイルを取得するための関数."""
     # curlコマンドのエラーハンドリング
     if 'file' not in request.files:
         return jsonify({"error": "No file part"}), 400
