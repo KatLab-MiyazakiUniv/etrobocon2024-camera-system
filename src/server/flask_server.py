@@ -13,15 +13,17 @@ UPLOAD_FOLDER = 'datafiles'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 # '/upload'へのPOSTリクエストに対する操作
+
+
 @app.route('/upload', methods=['POST'])
 def upload_file():
 
-    #curlコマンドのエラーハンドリング
+    # curlコマンドのエラーハンドリング
     if 'file' not in request.files:
         return jsonify({"error": "No file part"}), 400
-    
+
     file = request.files['file']
-    
+
     if file.filename == '':
         return jsonify({"error": "No selected file"}), 400
 
@@ -30,8 +32,9 @@ def upload_file():
         # src/server/datafilesに、受信したファイルを保存する。
         filePath = os.path.join(UPLOAD_FOLDER, fileName)
         file.save(filePath)
-        return jsonify({"message": "File uploaded successfully", "filePath": filePath}), 200
-    
+        return jsonify({"message": "File uploaded successfully",
+                        "filePath": filePath}), 200
+
 
 # ポート番号の設定
 if __name__ == "__main__":
