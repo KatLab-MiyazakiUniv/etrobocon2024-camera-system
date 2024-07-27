@@ -1,5 +1,5 @@
 '''
-走行体からWebサーバー。
+走行体から画像ファイルを受信するWebサーバー。
 
 @author Keiya121 CHIHAYATAKU
 '''
