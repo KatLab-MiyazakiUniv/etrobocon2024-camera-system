@@ -1,8 +1,8 @@
-'''
-走行体から画像ファイルを受信するWebサーバー。
+"""
+走行体から画像ファイルを受信するWebサーバー.
 
 @author Keiya121 CHIHAYATAKU
-'''
+"""
 
 import os
 from flask import Flask, request, jsonify
@@ -16,7 +16,7 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 
 @app.route('/upload', methods=['POST'])
-def upload_file():
+def uploadFile():
 
     # curlコマンドのエラーハンドリング
     if 'file' not in request.files:
