@@ -16,7 +16,7 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 
 @app.route('/upload', methods=['POST'])
-def uploadFile():
+def uploadFile() -> jsonify:
 
     # curlコマンドのエラーハンドリング
     if 'file' not in request.files:
