@@ -42,12 +42,12 @@ def getImageFile() -> jsonify:
 # ポート番号の設定
 if __name__ == "__main__":
     ip = "127.0.0.1"
-    
+
     if platform.system() == "Windows":
         host = platform.node()
     else:
         host = os.uname()[1]
-        
+
     if host == "KatLabLaptop":
         # 参照 https://qiita.com/suzu12/items/b5c3d16aae55effb67c0
         connect_interface = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
