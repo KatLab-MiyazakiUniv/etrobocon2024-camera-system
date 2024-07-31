@@ -3,8 +3,8 @@
 server()は、"http://"サーバIPアドレス":8000/"にアクセスされたときに実行されます。
 
 ## サーバの立て方
-```
 etrobocon2024-camera-system/src/server に移動します。
+```
 $ poetry run python3 flask_server.py
 ```
 
