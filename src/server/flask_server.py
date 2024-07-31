@@ -42,7 +42,7 @@ if __name__ == "__main__":
     ip = "127.0.0.1"
     host = os.uname()[1]
     if host == "KatLabLaptop":
-        #参照 https://qiita.com/suzu12/items/b5c3d16aae55effb67c0
+        # 参照 https://qiita.com/suzu12/items/b5c3d16aae55effb67c0
         connect_interface = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         connect_interface.connect(("8.8.8.8", 80))
         ip = connect_interface.getsockname()[0]
