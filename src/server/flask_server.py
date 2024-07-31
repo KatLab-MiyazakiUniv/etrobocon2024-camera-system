@@ -36,6 +36,7 @@ def getImageFile() -> jsonify:
         return jsonify({"message": "File uploaded successfully",
                         "filePath": filePath}), 200
 
+
 print(os.uname()[1])
 # ポート番号の設定
 if __name__ == "__main__":
