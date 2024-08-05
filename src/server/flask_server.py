@@ -48,9 +48,12 @@ if __name__ == "__main__":
         host = os.uname()[1]
 
     if host == "KatLabLaptop":
-        # 参照 https://qiita.com/suzu12/items/b5c3d16aae55effb67c0
+        # ソケットを作成し、GoogleのDNSサーバ("8.8.8.8:80")
+        # に接続することで、IPアドレスを取得する。
+        # 参考: https://qiita.com/suzu12/items/b5c3d16aae55effb67c0
         connect_interface = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         connect_interface.connect(("8.8.8.8", 80))
         ip = connect_interface.getsockname()[0]
         connect_interface.close()
+
     app.run(host=ip, port=8000)
