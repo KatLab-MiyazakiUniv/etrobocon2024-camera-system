@@ -30,13 +30,12 @@ def getImageFile() -> jsonify:
     if file.filename == '':
         return jsonify({"error": "No selected file"}), 400
 
-    if file:
-        fileName = file.filename
-        # src/server/datafilesに、受信したファイルを保存する。
-        filePath = os.path.join(UPLOAD_FOLDER, fileName)
-        file.save(filePath)
-        return jsonify({"message": "File uploaded successfully",
-                        "filePath": filePath}), 200
+    fileName = file.filename
+    # src/server/datafilesに、受信したファイルを保存する。
+    filePath = os.path.join(UPLOAD_FOLDER, fileName)
+    file.save(filePath)
+    return jsonify({"message": "File uploaded successfully",
+                    "filePath": filePath}), 200
 
 
 # ポート番号の設定
