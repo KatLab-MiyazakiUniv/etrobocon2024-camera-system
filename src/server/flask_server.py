@@ -8,18 +8,16 @@ import os
 import socket
 import platform
 
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_file
 
 app = Flask(__name__)
 
-UPLOAD_FOLDER = 'datafiles'
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
-# '/upload'へのPOSTリクエストに対する操作
+# '/images'へのPOSTリクエストに対する操作
 
 
-@app.route('/upload', methods=['POST'])
-def getImageFile() -> jsonify:
+@app.route('/images', methods=['POST'])
+def getImage() -> jsonify:
     """走行体から、画像ファイルを取得するための関数."""
     # curlコマンドのエラーハンドリング
     if 'file' not in request.files:
@@ -31,7 +29,11 @@ def getImageFile() -> jsonify:
         return jsonify({"error": "No selected file"}), 400
 
     fileName = file.filename
-    # src/server/datafilesに、受信したファイルを保存する。
+
+    UPLOAD_FOLDER = 'image_data'
+    os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
+    # src/server/image_dataに、受信したファイルを保存する。
     filePath = os.path.join(UPLOAD_FOLDER, fileName)
     file.save(filePath)
     return jsonify({"message": "File uploaded successfully",
