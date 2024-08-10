@@ -101,7 +101,7 @@ if __name__ == "__main__":
     else:
         host = os.uname()[1]
 
-    if host == "kei26MacBook-Air.local":
+    if host == "KatLabLaptop":
         # ソケットを作成し、GoogleのDNSサーバ("8.8.8.8:80")
         # に接続することで、IPアドレスを取得する。
         # 参考: https://qiita.com/suzu12/items/b5c3d16aae55effb67c0
