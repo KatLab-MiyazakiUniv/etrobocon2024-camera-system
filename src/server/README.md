@@ -16,10 +16,10 @@ etrobocon2024-camera-system/ディレクトリ内で以下のコマンドを実�
 ## データ送信
 画像ファイルを送信する
 ```
-$ curl -X POST -F "file=@"画像ファイルのパス"" http://"サーバIPアドレス":8000/images
+$ curl -X POST -F "file=@"画像ファイルのパス"" http://サーバIPアドレス:8000/images
 ```
 
 実行ログを送信する
 ```
-$ curl -X POST -F "file=@"画像ファイルのパス"" http://"サーバIPアドレス":8000/run-log
+$ curl -X POST -F "file=@"画像ファイルのパス"" http://サーバIPアドレス:8000/run-log
 ```

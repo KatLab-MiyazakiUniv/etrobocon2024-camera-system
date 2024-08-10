@@ -11,15 +11,13 @@ import platform
 
 from flask import Flask, request, jsonify, send_file
 
-
 app = Flask(__name__)
-
 
 # '/images'へのPOSTリクエストに対する操作
 
 
 @app.route('/images', methods=['POST'])
-def getImage() -> jsonify:
+def get_image() -> jsonify:
     """走行体から、画像ファイルを取得するための関数."""
     # curlコマンドのエラーハンドリング
     if 'file' not in request.files:
@@ -30,21 +28,21 @@ def getImage() -> jsonify:
     if file.filename == '':
         return jsonify({"error": "No selected file"}), 400
 
-    fileName = file.filename
+    file_name = file.filename
 
-    UPLOAD_FOLDER = 'image_data'
-    os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+    upload_folder = os.path.join(os.path.dirname(__file__), 'image_data')
+    os.makedirs(upload_folder, exist_ok=True)
 
     # src/server/image_dataに、受信したファイルを保存する。
-    filePath = os.path.join(UPLOAD_FOLDER, fileName)
-    file.save(filePath)
+    file_path = os.path.join(upload_folder, file_name)
+    file.save(file_path)
     return jsonify({"message": "File uploaded successfully"}), 200
 
 # '/run-log'へのPOSTリクエストに対する操作
 
 
 @app.route('/run-log', methods=['POST'])
-def getRunLog() -> jsonify:
+def get_run_log() -> jsonify:
     """走行体から、実行ログのcsvファイルを取得するための関数."""
     # curlコマンドのエラーハンドリング
     if 'file' not in request.files:
@@ -55,17 +53,17 @@ def getRunLog() -> jsonify:
     if file.filename == '':
         return jsonify({"error": "No selected file"}), 400
 
-    fileName = file.filename
+    file_name = file.filename
 
-    UPLOAD_FOLDER = 'run_log_csv'
-    os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+    upload_folder = os.path.join(os.path.dirname(__file__), 'run_log_csv')
+    os.makedirs(upload_folder, exist_ok=True)
 
     # src/server/run_log_csvに、受信したファイルを保存する。
-    filePath = os.path.join(UPLOAD_FOLDER, fileName)
-    file.save(filePath)
+    file_path = os.path.join(upload_folder, file_name)
+    file.save(file_path)
 
     # CSVファイルをJSONに変換する
-    converter = CSVToJSONConverter(filePath)
+    converter = CSVToJSONConverter(file_path)
     converter.convert()
 
     return jsonify({"message": "File uploaded successfully"}), 200
@@ -74,22 +72,21 @@ def getRunLog() -> jsonify:
 
 
 @app.route('/run-log', methods=['GET'])
-def sendRunLog() -> jsonify:
+def send_run_log() -> jsonify:
     """Webアプリに実行ログのjsonファイルを送信するための関数."""
-
-    STORAGE_FOLDER = 'run_log_json'
+    storage_folder = os.path.join(os.path.dirname(__file__), 'run_log_json')
 
     # 保存されたファイルのリストを取得
-    files = os.listdir(STORAGE_FOLDER)
+    files = os.listdir(storage_folder)
 
     if not files:
         return jsonify({"error": "No files available"}), 404
 
     # 一旦最後のファイルを送信
-    fileName = files[-1]
-    filePath = os.path.join(STORAGE_FOLDER, fileName)
+    file_name = files[-1]
+    file_path = os.path.join(storage_folder, file_name)
 
-    return send_file(filePath, as_attachment=True), 200
+    return send_file(file_path, as_attachment=True), 200
 
 
 # ポート番号の設定
@@ -101,7 +98,7 @@ if __name__ == "__main__":
     else:
         host = os.uname()[1]
 
-    if host == "KatLabLaptop":
+    if host == "KatlabLaptop":
         # ソケットを作成し、GoogleのDNSサーバ("8.8.8.8:80")
         # に接続することで、IPアドレスを取得する。
         # 参考: https://qiita.com/suzu12/items/b5c3d16aae55effb67c0
