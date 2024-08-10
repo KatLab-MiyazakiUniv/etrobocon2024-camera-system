@@ -30,4 +30,4 @@ coverage:
 	poetry run coverage report
 
 server:
-	poetry run python3 -m src.server.flask_server
+	poetry run python -m src.server.flask_server
