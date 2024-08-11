@@ -25,7 +25,7 @@ class OfficialInterface:
     """競技システムとの通信を行うクラス."""
 
     SERVER_IP = "192.168.100.1"    # 競技システムのIPアドレス
-    TEAM_ID = 63                   # チームID
+    TEAM_ID = 93                   # チームID
 
     @classmethod
     def upload_snap(cls, img_path: str) -> bool:
