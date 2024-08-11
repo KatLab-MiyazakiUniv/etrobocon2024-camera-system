@@ -8,10 +8,12 @@ from src.csv_to_json import CSVToJSONConverter
 import os
 import socket
 import platform
+from flask_cors import CORS
 
 from flask import Flask, request, jsonify, send_file
 
 app = Flask(__name__)
+CORS(app)
 
 # '/images'へのPOSTリクエストに対する操作
 
@@ -82,7 +84,7 @@ def send_run_log() -> jsonify:
     if not files:
         return jsonify({"error": "No files available"}), 404
 
-    # 一旦最後のファイルを送信
+    # 最後のファイルを送信
     file_name = files[-1]
     file_path = os.path.join(storage_folder, file_name)
 
