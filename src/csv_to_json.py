@@ -45,6 +45,6 @@ class CSVToJSONConverter:
             json.dump(json_data, json_file, ensure_ascii=False, indent=4)
 
     def _get_json_file_path(self) -> str:
-        """JSONファイルのパスを取得する."""
+        """JSONファイルのパスを作成する."""
         base, _ = os.path.splitext(os.path.basename(self.csv_file_path))
         return os.path.join('src', 'server', 'run_log_json', base + '.json')

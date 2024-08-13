@@ -76,17 +76,42 @@ def get_run_log() -> jsonify:
 @app.route('/run-log', methods=['GET'])
 def send_run_log() -> jsonify:
     """Webアプリに実行ログのjsonファイルを送信するための関数."""
+
+    # jsonファイルを指定するための変数
+    latest = request.args.get('latest')
+
+    # リクエストにクエリパラメータが存在しない場合
+    if latest is None:
+        return jsonify({"error": "Query parameter 'latest' is required"}), 400
+
+    # クエリパラメータが整数かどうかの判定
+    try:
+        latest = int(latest)
+    except ValueError:
+        return jsonify({"error": "Query parameter 'latest' must be an integer"}), 400
+
+    # jsonファイルが保存されているディレクトリを指定
     storage_folder = os.path.join(os.path.dirname(__file__), 'run_log_json')
 
-    # 保存されたファイルのリストを取得
+    # jsonファイルのリストを取得
     files = os.listdir(storage_folder)
 
+    # jsonファイルが存在するかをチェック
     if not files:
         return jsonify({"error": "No files available"}), 404
 
+    # クエリパラメータの指定したファイルが存在しない場合
+    if latest == 0 or latest > len(files):
+        return jsonify({"error": "'latest' is out of range"}), 404
+    
+    print(files)
+
     # 最後のファイルを送信
-    file_name = files[-1]
+    file_name = files[-latest]
     file_path = os.path.join(storage_folder, file_name)
+
+    # デバッグ用
+    print(file_name)
 
     return send_file(file_path, as_attachment=True), 200
 
@@ -100,7 +125,7 @@ if __name__ == "__main__":
     else:
         host = os.uname()[1]
 
-    if host == "KatlabLaptop":
+    if host == "katlabLaptop":
         # ソケットを作成し、GoogleのDNSサーバ("8.8.8.8:80")
         # に接続することで、IPアドレスを取得する。
         # 参考: https://qiita.com/suzu12/items/b5c3d16aae55effb67c0
