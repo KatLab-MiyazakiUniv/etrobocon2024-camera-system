@@ -104,14 +104,9 @@ def send_run_log() -> jsonify:
     if latest == 0 or latest > len(files):
         return jsonify({"error": "'latest' is out of range"}), 404
 
-    print(files)
-
     # 最後のファイルを送信
     file_name = files[-latest]
     file_path = os.path.join(storage_folder, file_name)
-
-    # デバッグ用
-    print(file_name)
 
     return send_file(file_path, as_attachment=True), 200
 
