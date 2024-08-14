@@ -76,7 +76,6 @@ def get_run_log() -> jsonify:
 @app.route('/run-log', methods=['GET'])
 def send_run_log() -> jsonify:
     """Webアプリに実行ログのjsonファイルを送信するための関数."""
-
     # jsonファイルを指定するための変数
     latest = request.args.get('latest')
 
@@ -88,7 +87,8 @@ def send_run_log() -> jsonify:
     try:
         latest = int(latest)
     except ValueError:
-        return jsonify({"error": "Query parameter 'latest' must be an integer"}), 400
+        return jsonify({"error":
+                        "Query parameter 'latest' must be an integer"}), 400
 
     # jsonファイルが保存されているディレクトリを指定
     storage_folder = os.path.join(os.path.dirname(__file__), 'run_log_json')
@@ -103,7 +103,7 @@ def send_run_log() -> jsonify:
     # クエリパラメータの指定したファイルが存在しない場合
     if latest == 0 or latest > len(files):
         return jsonify({"error": "'latest' is out of range"}), 404
-    
+
     print(files)
 
     # 最後のファイルを送信
