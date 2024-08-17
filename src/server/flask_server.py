@@ -4,11 +4,16 @@
 @author Keiya121 CHIHAYATAKU KakinokiKanta
 """
 
+from flask import Flask, request, jsonify
 import os
+import sys
 import socket
 import platform
 
-from flask import Flask, request, jsonify
+# 実行ファイルより上位ディレクトリのファイルを相対インポートできないため
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from official_interface import OfficialInterface
+
 
 app = Flask(__name__)
 
