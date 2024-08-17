@@ -1,7 +1,7 @@
 """
 走行体から画像ファイルを受信するWebサーバー.
 
-@author Keiya121 CHIHAYATAKU
+@author Keiya121 CHIHAYATAKU KakinokiKanta
 """
 
 import os
@@ -14,6 +14,13 @@ app = Flask(__name__)
 
 UPLOAD_FOLDER = 'datafiles'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
+# サーバ起動確認用
+@app.route('/', methods=['GET'])
+def healthCheck() -> jsonify:
+    """サーバ起動確認のための関数."""
+    return jsonify({"message": "I'm healty!"}), 200
+
 
 # '/upload'へのPOSTリクエストに対する操作
 
