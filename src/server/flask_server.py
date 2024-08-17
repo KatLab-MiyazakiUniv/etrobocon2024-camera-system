@@ -12,7 +12,7 @@ import platform
 
 # 実行ファイルより上位ディレクトリのファイルを相対インポートできないため
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from official_interface import OfficialInterface
+from official_interface import OfficialInterface # noqa
 
 
 app = Flask(__name__)
