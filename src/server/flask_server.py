@@ -23,8 +23,6 @@ def healthCheck() -> jsonify:
 
 
 # '/upload'へのPOSTリクエストに対する操作
-
-
 @app.route('/upload', methods=['POST'])
 def getImageFile() -> jsonify:
     """走行体から、画像ファイルを取得するための関数."""
@@ -41,6 +39,11 @@ def getImageFile() -> jsonify:
     # src/server/datafilesに、受信したファイルを保存する。
     filePath = os.path.join(UPLOAD_FOLDER, fileName)
     file.save(filePath)
+
+    # TODO: 現在は、1枚目のフィグ画像、プラレール画像の場合に競技システムへアップロードしている
+    if fileName == 'Fig_1.jpeg' or fileName == 'Pla.jpeg':
+        OfficialInterface.upload_snap(filePath)
+
     return jsonify({"message": "File uploaded successfully",
                     "filePath": filePath}), 200
 
