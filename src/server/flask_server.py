@@ -21,6 +21,8 @@ UPLOAD_FOLDER = 'datafiles'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 # サーバ起動確認用
+
+
 @app.route('/', methods=['GET'])
 def healthCheck() -> jsonify:
     """サーバ起動確認のための関数."""
