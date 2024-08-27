@@ -4,3 +4,7 @@ coverage*
 *.jpeg
 *.csv
 *.json
+
+# 推論
+fig_image
+*.pt
