@@ -40,9 +40,8 @@ class DetectObject():
     __IMG_SIZE = (640, 480)
 
     def __init__(self,
-                 weights=YOLO_PATH/'learned_fig_weight_ver2.pt',
-                 #  weights=YOLO_PATH/'learned_fig_weight.pt',
-                 label_data=YOLO_PATH/'fig_label.yaml',
+                 weights=YOLO_PATH/'exp17_best.pt',
+                 label_data=YOLO_PATH/'label_data.yaml',
                  conf_thres=0.6,
                  iou_thres=0.45,
                  max_det=10,

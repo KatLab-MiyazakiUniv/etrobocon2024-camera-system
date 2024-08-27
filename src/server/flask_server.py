@@ -6,9 +6,13 @@
 
 from src.csv_to_json import CSVToJSONConverter
 import os
+import sys
 import socket
 import platform
 from flask_cors import CORS
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from detect_object import DetectObject
 
 from flask import Flask, request, jsonify, send_file
 
@@ -38,6 +42,18 @@ def get_image() -> jsonify:
     # src/server/image_dataに、受信したファイルを保存する。
     file_path = os.path.join(upload_folder, file_name)
     file.save(file_path)
+
+    # 取得した画像が1枚目のふぃぐ画像である場合物体検出を行う
+    if file_name == 'Fig_1.jpeg':
+        d = DetectObject()
+        detected_img_path = os.path.join(upload_folder, "detected_"+file_name)
+
+        try:
+            objects = d.detect_object(img_path=file_path, save_path=detected_img_path)
+        except Exception:
+            print("Error: detect failed")
+            objects = []
+    
     return jsonify({"message": "File uploaded successfully"}), 200
 
 # '/run-log'へのPOSTリクエストに対する操作
@@ -120,7 +136,8 @@ if __name__ == "__main__":
     else:
         host = os.uname()[1]
 
-    if host == "KatLabLaptop":
+    # if host == "KatLabLaptop":
+    if host == "LAPTOP-UNI0BH6G": # 検証用
         # ソケットを作成し、GoogleのDNSサーバ("8.8.8.8:80")
         # に接続することで、IPアドレスを取得する。
         # 参考: https://qiita.com/suzu12/items/b5c3d16aae55effb67c0
