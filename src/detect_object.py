@@ -3,9 +3,9 @@
 ベストショット画像を選択するための物体検出を行う。
 
 NOTE:
-    'learned_fig_weight.pt'は以下にあります。
-    https://drive.google.com/drive/folders/1aUrB3Pj4hzt624SlJv8h1vVOBopAr48l
-    etrobocon2023-camera-system/yolo/の中にダウンロードしてください
+    重みファイル'exp17_best.pt'（現状）は以下にあります。
+    https://drive.google.com/drive/folders/1FZPZu1xNMaarVyKfaLlm3HZPFgYp5RCZ
+    etrobocon2024-camera-system/yolo/の中にダウンロードしてください
 
 参考コード:
     https://github.com/ultralytics/yolov5
@@ -44,7 +44,7 @@ class DetectObject():
                  label_data=YOLO_PATH/'label_data.yaml',
                  conf_thres=0.6,
                  iou_thres=0.45,
-                 max_det=10,
+                 max_det=1,
                  line_thickness=1,
                  stride=32):
         """コンストラクタ.
