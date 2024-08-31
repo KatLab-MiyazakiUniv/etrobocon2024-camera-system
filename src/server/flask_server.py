@@ -6,12 +6,11 @@
 
 from fileinput import filename
 import os
-import sys
 import socket
 import platform
 from flask_cors import CORS
-from csv_to_json import CSVToJSONConverter
-from official_interface import OfficialInterface
+from ..csv_to_json import CSVToJSONConverter
+from ..official_interface import OfficialInterface
 
 from flask import Flask, request, jsonify, send_file
 
