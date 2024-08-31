@@ -57,7 +57,7 @@ def get_image() -> jsonify:
     # TODO: 現在は、1枚目のフィグ画像、プラレール画像の場合に競技システムへアップロードしている
     if file_name == 'Fig_1.jpeg' or file_name == 'Pla.jpeg':
         OfficialInterface.upload_snap(file_path)
-    
+
     return jsonify({"message": "File uploaded successfully"}), 200
 
 # '/run-log'へのPOSTリクエストに対する操作
