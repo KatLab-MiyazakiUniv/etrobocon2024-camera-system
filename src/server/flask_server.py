@@ -5,11 +5,10 @@
 """
 
 import os
+import sys
 import socket
 import platform
 from flask_cors import CORS
-from csv_to_json import CSVToJSONConverter
-from official_interface import OfficialInterface
 
 from flask import Flask, request, jsonify, send_file
 
@@ -51,11 +50,6 @@ def get_image() -> jsonify:
     # src/server/image_dataに、受信したファイルを保存する。
     file_path = os.path.join(upload_folder, file_name)
     file.save(file_path)
-
-    # TODO: 現在は、1枚目のフィグ画像、プラレール画像の場合に競技システムへアップロードしている
-    if fileName == 'Fig_1.jpeg' or fileName == 'Pla.jpeg':
-        OfficialInterface.upload_snap(file_path)
-
     return jsonify({"message": "File uploaded successfully"}), 200
 
 # '/run-log'へのPOSTリクエストに対する操作
