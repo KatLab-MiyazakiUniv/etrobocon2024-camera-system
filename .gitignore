@@ -8,3 +8,4 @@ coverage*
 # 推論
 fig_image
 *.pt
+*.flag

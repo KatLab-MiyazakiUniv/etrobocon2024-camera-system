@@ -1,7 +1,7 @@
 """
 走行体と通信するWebサーバー.
 
-@author Keiya121 CHIHAYATAKU
+@author Keiya121 CHIHAYATAKU takahashitom
 """
 
 from src.csv_to_json import CSVToJSONConverter
@@ -50,9 +50,24 @@ def get_image() -> jsonify:
 
         try:
             objects = d.detect_object(img_path=file_path, save_path=detected_img_path)
+            print(objects)
+
+            cls = int(objects[0][5])
+            empty_file = os.path.abspath(f"{cls}_skip_camera_action.flag")
+
+            # 空のフラグ管理用ファイルを作成
+            with open(empty_file, 'w') as file:
+                pass
+
+            return send_file(empty_file,
+                             as_attachment=True,
+                             download_name=empty_file,
+                             mimetype='text/plain'), 200
         except Exception:
             print("Error: detect failed")
             objects = []
+            return jsonify({"message": "File uploaded successfully",
+                            "detect_results": "detect failed"}), 200
     
     return jsonify({"message": "File uploaded successfully"}), 200
 
