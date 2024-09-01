@@ -1,14 +1,18 @@
 """
 走行体と通信するWebサーバー.
 
-@author Keiya121 CHIHAYATAKU
+@author Keiya121 CHIHAYATAKU takahashitom
 """
 
 from src.csv_to_json import CSVToJSONConverter
 import os
+import sys
 import socket
 import platform
 from flask_cors import CORS
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from detect_object import DetectObject
 
 from flask import Flask, request, jsonify, send_file
 
@@ -38,7 +42,57 @@ def get_image() -> jsonify:
     # src/server/image_dataに、受信したファイルを保存する。
     file_path = os.path.join(upload_folder, file_name)
     file.save(file_path)
+
     return jsonify({"message": "File uploaded successfully"}), 200
+
+# '/detect'へのPOSTリクエストに対する操作
+
+
+@app.route('/detect', methods=['POST'])
+def get_detection_image() -> jsonify:
+    """走行体から画像ファイルを取得し、物体検出した結果を送信するための関数."""
+    # curlコマンドのエラーハンドリング
+    if 'file' not in request.files:
+        return jsonify({"error": "No file part"}), 400
+
+    file = request.files['file']
+
+    if file.filename == '':
+        return jsonify({"error": "No selected file"}), 400
+
+    file_name = file.filename
+
+    upload_folder = os.path.join(os.path.dirname(__file__), 'image_data')
+    os.makedirs(upload_folder, exist_ok=True)
+
+    # src/server/image_dataに、受信したファイルを保存する
+    file_path = os.path.join(upload_folder, file_name)
+    file.save(file_path)
+
+    # 取得した画像に対し物体検出を行う
+    d = DetectObject()
+    detected_img_path = os.path.join(upload_folder, "detected_"+file_name)
+
+    try:
+        objects = d.detect_object(img_path=file_path, save_path=detected_img_path)
+        print(objects)
+
+        cls = int(objects[0][5])
+        empty_file = os.path.abspath(f"{cls}_skip_camera_action.flag")
+
+        # 空のフラグ管理用ファイルを作成
+        with open(empty_file, 'w') as file:
+            pass
+
+        return send_file(empty_file,
+                         as_attachment=True,
+                         download_name=empty_file,
+                         mimetype='text/plain'), 200
+    except Exception:
+        print("Error: detect failed")
+        objects = []
+        return jsonify({"message": "File uploaded successfully",
+                        "detect_results": "detect failed"}), 200
 
 # '/run-log'へのPOSTリクエストに対する操作
 
