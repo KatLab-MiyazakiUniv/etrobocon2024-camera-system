@@ -9,7 +9,7 @@ NOTE:
 
 参考コード:
     https://github.com/ultralytics/yolov5
-@author: kawanoichi
+@author: takahashitom
 """
 
 import torch
