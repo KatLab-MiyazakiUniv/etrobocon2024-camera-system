@@ -4,6 +4,8 @@
 @author Keiya121 CHIHAYATAKU takahashitom
 """
 
+from flask import Flask, request, jsonify, send_file
+from detect_object import DetectObject
 from src.csv_to_json import CSVToJSONConverter
 import os
 import sys
@@ -12,9 +14,7 @@ import platform
 from flask_cors import CORS
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from detect_object import DetectObject
 
-from flask import Flask, request, jsonify, send_file
 
 app = Flask(__name__)
 CORS(app)
@@ -74,7 +74,8 @@ def get_detection_image() -> jsonify:
     detected_img_path = os.path.join(upload_folder, "detected_"+file_name)
 
     try:
-        objects = d.detect_object(img_path=file_path, save_path=detected_img_path)
+        objects = d.detect_object(img_path=file_path,
+                                  save_path=detected_img_path)
         print(objects)
 
         cls = int(objects[0][5])
