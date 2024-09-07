@@ -5,8 +5,8 @@
 """
 
 from flask import Flask, request, jsonify, send_file
-from detect_object import DetectObject
-from src.csv_to_json import CSVToJSONConverter
+from ..detect_object import DetectObject
+from ..csv_to_json import CSVToJSONConverter
 import os
 import sys
 import socket
