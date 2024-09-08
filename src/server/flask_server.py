@@ -4,7 +4,6 @@
 @author Keiya121 CHIHAYATAKU KakinokiKanta
 """
 
-from fileinput import filename
 import os
 import socket
 import platform
@@ -25,7 +24,12 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 @app.route('/', methods=['GET'])
 def health_check() -> jsonify:
-    """サーバ起動確認のための関数."""
+    """サーバ起動確認のための関数.
+
+    Return:
+        jsonify (string, int):
+        レスポンスメッセージ,ステータスコード
+    """
     return jsonify({"message": "I'm healty!"}), 200
 
 
@@ -34,7 +38,11 @@ def health_check() -> jsonify:
 
 @app.route('/images', methods=['POST'])
 def get_image() -> jsonify:
-    """走行体から、画像ファイルを取得するための関数."""
+    """走行体から、画像ファイルを取得するための関数.
+
+    Return:
+            jsonify (string, int): レスポンスメッセージ,ステータスコード
+    """
     # curlコマンドのエラーハンドリング
     if 'file' not in request.files:
         return jsonify({"error": "No file part"}), 400
@@ -64,7 +72,11 @@ def get_image() -> jsonify:
 
 @app.route('/run-log', methods=['POST'])
 def get_run_log() -> jsonify:
-    """走行体から、実行ログのcsvファイルを取得するための関数."""
+    """走行体から、実行ログのcsvファイルを取得するための関数.
+
+    Return:
+            jsonify (string, int): レスポンスメッセージ,ステータスコード
+    """
     # curlコマンドのエラーハンドリング
     if 'file' not in request.files:
         return jsonify({"error": "No file part"}), 400
@@ -94,7 +106,11 @@ def get_run_log() -> jsonify:
 
 @app.route('/run-log', methods=['GET'])
 def send_run_log() -> jsonify:
-    """Webアプリに実行ログのjsonファイルを送信するための関数."""
+    """Webアプリに実行ログのjsonファイルを送信するための関数.
+
+    Return:
+            jsonify (string, int): レスポンスメッセージ,ステータスコード
+    """
     # jsonファイルを指定するための変数
     latest = request.args.get('latest')
 
