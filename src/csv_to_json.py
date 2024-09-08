@@ -31,7 +31,7 @@ class CSVToJSONConverter:
         """CSVファイルを読み込み、辞書のリストを返す.
 
         Return:
-              run_log_data (List[dict]): 辞書形式の走行ログデータ
+              run_log_data (List[dict]): 走行ログデータ
         """
         run_log_data = []
         with open(self.csv_file_path, mode='r', encoding='utf-8') as csv_file:
@@ -45,7 +45,7 @@ class CSVToJSONConverter:
         """データをJSONファイルに書き込む.
 
         Args:
-            run_log_data (List[dict]): 辞書形式の走行ログデータ
+            run_log_data (List[dict]): 走行ログデータ
         """
         json_data = {'runLog': run_log_data}
 
@@ -60,9 +60,9 @@ class CSVToJSONConverter:
         """JSONファイルのパスを作成する.
 
         Return:
-              json_filepath (str): jsonファイルのパス
+              json_file_path (str): jsonファイルのパス
         """
         base, _ = os.path.splitext(os.path.basename(self.csv_file_path))
-        json_filepath = os.path.join(
+        json_file_path = os.path.join(
             'src', 'server', 'run_log_json', base + '.json')
-        return json_filepath
+        return json_file_path
