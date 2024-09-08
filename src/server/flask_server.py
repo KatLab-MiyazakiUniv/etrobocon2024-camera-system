@@ -1,26 +1,48 @@
 """
-走行体から画像ファイルを受信するWebサーバー.
+走行体と通信するWebサーバー.
 
-@author Keiya121 CHIHAYATAKU
+@author Keiya121 CHIHAYATAKU KakinokiKanta
 """
 
 import os
 import socket
 import platform
+from flask_cors import CORS
+from ..csv_to_json import CSVToJSONConverter
+from ..official_interface import OfficialInterface
 
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_file
 
 app = Flask(__name__)
+CORS(app)
 
 UPLOAD_FOLDER = 'datafiles'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
-# '/upload'へのPOSTリクエストに対する操作
+# サーバ起動確認用
 
 
-@app.route('/upload', methods=['POST'])
-def getImageFile() -> jsonify:
-    """走行体から、画像ファイルを取得するための関数."""
+@app.route('/', methods=['GET'])
+def health_check() -> jsonify:
+    """サーバ起動確認のための関数.
+
+    Return:
+        jsonify (string, int):
+        レスポンスメッセージ,ステータスコード
+    """
+    return jsonify({"message": "I'm healty!"}), 200
+
+
+# '/images'へのPOSTリクエストに対する操作
+
+
+@app.route('/images', methods=['POST'])
+def get_image() -> jsonify:
+    """走行体から、画像ファイルを取得するための関数.
+
+    Return:
+            jsonify (string, int): レスポンスメッセージ,ステータスコード
+    """
     # curlコマンドのエラーハンドリング
     if 'file' not in request.files:
         return jsonify({"error": "No file part"}), 400
@@ -30,12 +52,98 @@ def getImageFile() -> jsonify:
     if file.filename == '':
         return jsonify({"error": "No selected file"}), 400
 
-    fileName = file.filename
-    # src/server/datafilesに、受信したファイルを保存する。
-    filePath = os.path.join(UPLOAD_FOLDER, fileName)
-    file.save(filePath)
-    return jsonify({"message": "File uploaded successfully",
-                    "filePath": filePath}), 200
+    file_name = file.filename
+
+    upload_folder = os.path.join(os.path.dirname(__file__), 'image_data')
+    os.makedirs(upload_folder, exist_ok=True)
+
+    # src/server/image_dataに、受信したファイルを保存する。
+    file_path = os.path.join(upload_folder, file_name)
+    file.save(file_path)
+
+    # TODO: 現在は、1枚目のフィグ画像、プラレール画像の場合に競技システムへアップロードしている
+    if file_name == 'Fig_1.jpeg' or file_name == 'Pla.jpeg':
+        OfficialInterface.upload_snap(file_path)
+
+    return jsonify({"message": "File uploaded successfully"}), 200
+
+# '/run-log'へのPOSTリクエストに対する操作
+
+
+@app.route('/run-log', methods=['POST'])
+def get_run_log() -> jsonify:
+    """走行体から、実行ログのcsvファイルを取得するための関数.
+
+    Return:
+            jsonify (string, int): レスポンスメッセージ,ステータスコード
+    """
+    # curlコマンドのエラーハンドリング
+    if 'file' not in request.files:
+        return jsonify({"error": "No file part"}), 400
+
+    file = request.files['file']
+
+    if file.filename == '':
+        return jsonify({"error": "No selected file"}), 400
+
+    file_name = file.filename
+
+    upload_folder = os.path.join(os.path.dirname(__file__), 'run_log_csv')
+    os.makedirs(upload_folder, exist_ok=True)
+
+    # src/server/run_log_csvに、受信したファイルを保存する。
+    file_path = os.path.join(upload_folder, file_name)
+    file.save(file_path)
+
+    # CSVファイルをJSONに変換する
+    converter = CSVToJSONConverter(file_path)
+    converter.convert()
+
+    return jsonify({"message": "File uploaded successfully"}), 200
+
+# '/run-log'へのGETリクエストに対する操作
+
+
+@app.route('/run-log', methods=['GET'])
+def send_run_log() -> jsonify:
+    """Webアプリに実行ログのjsonファイルを送信するための関数.
+
+    Return:
+            jsonify (string, int): レスポンスメッセージ,ステータスコード
+    """
+    # jsonファイルを指定するための変数
+    latest = request.args.get('latest')
+
+    # リクエストにクエリパラメータが存在しない場合
+    if latest is None:
+        return jsonify({"error": "Query parameter 'latest' is required"}), 400
+
+    # クエリパラメータが整数かどうかの判定
+    try:
+        latest = int(latest)
+    except ValueError:
+        return jsonify({"error":
+                        "Query parameter 'latest' must be an integer"}), 400
+
+    # jsonファイルが保存されているディレクトリを指定
+    storage_folder = os.path.join(os.path.dirname(__file__), 'run_log_json')
+
+    # jsonファイルのリストを取得
+    files = os.listdir(storage_folder)
+
+    # jsonファイルが存在するかをチェック
+    if not files:
+        return jsonify({"error": "No files available"}), 404
+
+    # クエリパラメータの指定したファイルが存在しない場合
+    if latest == 0 or latest > len(files):
+        return jsonify({"error": "'latest' is out of range"}), 404
+
+    # 最後のファイルを送信
+    file_name = files[-latest]
+    file_path = os.path.join(storage_folder, file_name)
+
+    return send_file(file_path, as_attachment=True), 200
 
 
 # ポート番号の設定
