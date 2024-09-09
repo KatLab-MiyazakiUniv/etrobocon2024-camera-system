@@ -13,6 +13,8 @@ help:
 	@echo " $$ make server"
 	@echo "実行ログディレクトリ内の全てのファイルを削除する"
 	@echo " $$ make clean"
+	@echo フラグ管理用のファイルを全て削除する
+	@echo " $$ make flag-delete"
 
 run:
 	poetry run python src
@@ -37,3 +39,8 @@ server:
 clean:
 	rm -rf src/server/run_log_csv/*
 	rm -rf src/server/run_log_json/*
+server: flag-delete
+	poetry run python -m src.server.flask_server
+
+flag-delete:
+	find ./ -type f -name "*.flag" -exec rm {} +
