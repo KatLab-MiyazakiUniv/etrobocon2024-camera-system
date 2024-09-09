@@ -20,10 +20,6 @@ import numpy as np
 import sys
 from ultralytics.utils.plotting import Annotator, colors
 
-# Linux環境で推論する場合はコメントアウト
-temp = pathlib.PosixPath
-pathlib.PosixPath = pathlib.WindowsPath
-
 script_dir = os.path.dirname(os.path.abspath(__file__))  # noqa
 YOLO_PATH = os.path.join(script_dir, "..", "yolo")  # noqa
 sys.path.append(YOLO_PATH)  # noqa
@@ -33,6 +29,10 @@ from utils.general import (
     check_img_size, cv2, non_max_suppression, scale_boxes)
 from utils.torch_utils import select_device
 from utils.augmentations import letterbox
+
+# Linux環境で推論する場合はコメントアウト
+temp = pathlib.PosixPath
+pathlib.PosixPath = pathlib.WindowsPath
 
 PROJECT_DIR_PATH = os.path.dirname(script_dir)
 IMAGE_DIR_PATH = Path(os.path.join(PROJECT_DIR_PATH, "fig_image"))
