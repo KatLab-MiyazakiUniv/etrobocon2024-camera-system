@@ -13,7 +13,13 @@ NOTE:
 """
 
 import torch
+import pathlib
 from pathlib import Path
+
+#Linux環境で推論する場合はコメントアウト
+temp = pathlib.PosixPath
+pathlib.PosixPath = pathlib.WindowsPath
+
 import os
 import numpy as np
 import sys
