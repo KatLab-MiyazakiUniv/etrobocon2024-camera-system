@@ -39,8 +39,6 @@ server:
 clean:
 	rm -rf src/server/run_log_csv/*
 	rm -rf src/server/run_log_json/*
-server: flag-delete
-	poetry run python -m src.server.flask_server
 
 flag-delete:
 	find ./ -type f -name "*.flag" -exec rm {} +
