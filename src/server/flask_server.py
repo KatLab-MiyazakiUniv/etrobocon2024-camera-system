@@ -62,9 +62,8 @@ def get_image() -> jsonify:
     file_path = os.path.join(upload_folder, file_name)
     file.save(file_path)
 
-    # TODO: 現在は、1枚目のフィグ画像、プラレール画像の場合に競技システムへアップロードしている
-    if file_name == 'Fig_1.jpeg' or file_name == 'Pla.jpeg':
-        OfficialInterface.upload_snap(file_path)
+    # 送られてきたファイルを競技システムに送信する
+    OfficialInterface.upload_snap(file_path)
 
     return jsonify({"message": "File uploaded successfully"}), 200
 
@@ -112,6 +111,10 @@ def get_detection_image() -> jsonify:
         with open(empty_file, 'w') as file:
             pass
 
+        # 判定したふぃぐの向きがが正面だった場合、競技システムに送信する
+        if cls == 0:
+            OfficialInterface.upload_snap(file_path)
+
         return send_file(empty_file,
                          as_attachment=True,
                          download_name=empty_file,
@@ -119,8 +122,19 @@ def get_detection_image() -> jsonify:
     except Exception:
         print("Error: detect failed")
         objects = []
-        return jsonify({"message": "File uploaded successfully",
-                        "detect_results": "detect failed"}), 200
+        cls = -1
+        empty_file = os.path.abspath(f"{cls}_skip_camera_action.flag")
+
+        # 空のフラグ管理用ファイルを作成
+        with open(empty_file, 'w') as file:
+            pass
+
+        OfficialInterface.upload_snap(file_path)
+        
+        return send_file(empty_file,
+                         as_attachment=True,
+                         download_name=empty_file,
+                         mimetype='text/plain'), 200
 
 # '/run-log'へのPOSTリクエストに対する操作
 
