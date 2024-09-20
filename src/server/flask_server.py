@@ -11,6 +11,7 @@ from flask_cors import CORS
 from ..csv_to_json import CSVToJSONConverter
 from ..official_interface import OfficialInterface
 from ..detect_object import DetectObject
+from ..image_processor import ImageProcessor
 
 from flask import Flask, request, jsonify, send_file
 
@@ -62,10 +63,17 @@ def get_image() -> jsonify:
     file_path = os.path.join(upload_folder, file_name)
     file.save(file_path)
 
-    # 送られてきたファイルを競技システムに送信する
-    OfficialInterface.upload_snap(file_path)
+    # 画像の先鋭化処理を行う
+    sharpened_file_path = ImageProcessor.sharpen_image(file_path)
 
-    return jsonify({"message": "File uploaded successfully"}), 200
+    if sharpened_image_path:
+        # 先鋭化した画像ファイルを競技システムに送信する
+        OfficialInterface.upload_snap(sharpened_file_path)
+        return jsonify({"message": "Sharpened File uploaded successfully"}), 200
+    else:
+        # 受け取った画像ファイルを競技システムに送信する
+        OfficialInterface.upload_snap(file_path)
+        return jsonify({"message": "File uploaded successfully"}), 200
 
 # '/detect'へのPOSTリクエストに対する操作
 
