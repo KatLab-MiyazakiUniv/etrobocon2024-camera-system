@@ -66,7 +66,7 @@ def get_image() -> jsonify:
     # 画像の先鋭化処理を行う
     sharpened_file_path = ImageProcessor.sharpen_image(file_path)
 
-    if sharpened_image_path:
+    if sharpened_file_path:
         # 先鋭化した画像ファイルを競技システムに送信する
         OfficialInterface.upload_snap(sharpened_file_path)
         return jsonify({"message": "Sharpened File uploaded successfully"}), 200

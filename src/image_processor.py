@@ -30,7 +30,7 @@ class ImageProcessor:
             img = cv2.imread(image_path, cv2.IMREAD_UNCHANGED)
 
             if img is None:
-                raise FileNotFoundError(f"'{img_path}' is not found")
+                raise FileNotFoundError(f"'{image_path}' is not found")
 
             # アンシャープマスクを適用する
             blurred = cv2.GaussianBlur(img, (0, 0), 2)  # ぼかし処理
@@ -40,8 +40,8 @@ class ImageProcessor:
             result = cv2.addWeighted(img, 2.5, blurred, -1.5, 0)  # 差分から鮮明化
 
             # 出力パスの生成
-            dir_path = os.path.dirname(img_path)
-            file_name = os.path.basename(img_path)
+            dir_path = os.path.dirname(image_path)
+            file_name = os.path.basename(image_path)
             output_path = os.path.join(dir_path, f"Sharpened_{file_name}")
 
             # 先鋭化画像保存処理
@@ -54,20 +54,20 @@ class ImageProcessor:
             print("Error:", e)
             return None
 
-if __name__ == '__main__':
+# if __name__ == '__main__':
 
-import argparse
+# import argparse
 
-    parser = argparse.ArgumentParser(description="画像処理に関するプログラム")
+#     parser = argparse.ArgumentParser(description="画像処理に関するプログラム")
 
-    parser.add_argument("-ipath", "--image_path", type=str,
-                        default=IMAGE_DIR_PATH/'test_image.jpeg', help='入力画像')
+#     parser.add_argument("-ipath", "--image_path", type=str,
+#                         default=IMAGE_DIR_PATH/'test_image.jpeg', help='入力画像')
 
-    args = parser.parse_args()
+#     args = parser.parse_args()
     
-    sharpened_image = ImageProcessor.sharpen_image(args.input_path)
+#     sharpened_image = ImageProcessor.sharpen_image(args.input_path)
     
-    if sharpened_image:
-        print(f"先鋭化完了。結果は {output_path} に保存しています。")
-    else:
-        print("先鋭化失敗。")
+#     if sharpened_image:
+#         print(f"先鋭化完了。結果は {output_path} に保存しています。")
+#     else:
+#         print("先鋭化失敗。")

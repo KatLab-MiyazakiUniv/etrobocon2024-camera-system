@@ -6,4 +6,4 @@
 #   - テスト用の競技システムとLANケーブルで接続している
 
 KILL_SERVER_COMMAND='ps aux | grep node | grep -v "grep" | awk '\''{print $2}'\'' | sudo xargs -r kill -9'
-ssh et2024@official-system "$KILL_SERVER_COMMAND"
+ssh taki@192.168.11.26 "$KILL_SERVER_COMMAND"
