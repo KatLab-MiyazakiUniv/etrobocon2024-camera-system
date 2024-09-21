@@ -121,7 +121,16 @@ def get_detection_image() -> jsonify:
 
         # 判定したふぃぐの向きがが正面だった場合、競技システムに送信する
         if cls == 0:
+            # 画像の先鋭化処理を行う
+            sharpened_file_path = ImageProcessor.sharpen_image(file_path)
             OfficialInterface.upload_snap(file_path)
+
+            if sharpened_file_path:
+                # 先鋭化した画像ファイルを競技システムに送信する
+                OfficialInterface.upload_snap(sharpened_file_path)
+            else:
+                # 受け取った画像ファイルを競技システムに送信する
+                OfficialInterface.upload_snap(file_path)
 
         return send_file(empty_file,
                          as_attachment=True,
