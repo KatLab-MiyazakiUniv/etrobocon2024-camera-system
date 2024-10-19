@@ -69,7 +69,7 @@ def get_image() -> jsonify:
     if sharpened_file_path:
         # 先鋭化した画像ファイルを競技システムに送信する
         OfficialInterface.upload_snap(sharpened_file_path)
-        return jsonify({"message": 
+        return jsonify({"message":
                         "Sharpened File uploaded successfully"}), 200
     else:
         # 受け取った画像ファイルを競技システムに送信する
