@@ -8,6 +8,7 @@ import cv2
 import numpy as np
 import os
 
+
 class ImageProcessor:
     """CSVファイルをJSONファイルに変換するクラス."""
 
@@ -61,12 +62,12 @@ class ImageProcessor:
 #     parser = argparse.ArgumentParser(description="画像処理に関するプログラム")
 
 #     parser.add_argument("-ipath", "--image_path", type=str,
-#                         default=IMAGE_DIR_PATH/'test_image.jpeg', help='入力画像')
+#                   default=IMAGE_DIR_PATH/'test_image.jpeg', help='入力画像')
 
 #     args = parser.parse_args()
-    
+
 #     sharpened_image = ImageProcessor.sharpen_image(args.input_path)
-    
+
 #     if sharpened_image:
 #         print(f"先鋭化完了。結果は {output_path} に保存しています。")
 #     else:

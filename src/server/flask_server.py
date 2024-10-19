@@ -69,7 +69,8 @@ def get_image() -> jsonify:
     if sharpened_file_path:
         # 先鋭化した画像ファイルを競技システムに送信する
         OfficialInterface.upload_snap(sharpened_file_path)
-        return jsonify({"message": "Sharpened File uploaded successfully"}), 200
+        return jsonify({"message": 
+                        "Sharpened File uploaded successfully"}), 200
     else:
         # 受け取った画像ファイルを競技システムに送信する
         OfficialInterface.upload_snap(file_path)
@@ -125,10 +126,10 @@ def get_detection_image() -> jsonify:
             sharpened_file_path = ImageProcessor.sharpen_image(file_path)
 
             if sharpened_file_path:
-                # 先鋭化した画像ファイルを競技システムに送信する
+                # 先鋭化したふぃぐ画像を競技システムに送信する
                 OfficialInterface.upload_snap(sharpened_file_path)
             else:
-                # 受け取った画像ファイルを競技システムに送信する
+                # ふぃぐ画像をそのまま競技システムに送信する
                 OfficialInterface.upload_snap(file_path)
 
         return send_file(empty_file,
@@ -146,7 +147,7 @@ def get_detection_image() -> jsonify:
             pass
 
         OfficialInterface.upload_snap(file_path)
-        
+
         return send_file(empty_file,
                          as_attachment=True,
                          download_name=empty_file,
