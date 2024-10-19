@@ -123,7 +123,6 @@ def get_detection_image() -> jsonify:
         if cls == 0:
             # 画像の先鋭化処理を行う
             sharpened_file_path = ImageProcessor.sharpen_image(file_path)
-            OfficialInterface.upload_snap(file_path)
 
             if sharpened_file_path:
                 # 先鋭化した画像ファイルを競技システムに送信する
