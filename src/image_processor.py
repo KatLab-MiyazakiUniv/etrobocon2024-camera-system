@@ -10,7 +10,7 @@ import os
 
 
 class ImageProcessor:
-    """CSVファイルをJSONファイルに変換するクラス."""
+    """画像の先鋭化のためのクラス."""
 
     @staticmethod
     def sharpen_image(image_path: str) -> str:
@@ -43,13 +43,13 @@ class ImageProcessor:
             # 出力パスの生成
             dir_path = os.path.dirname(image_path)
             file_name = os.path.basename(image_path)
-            output_path = os.path.join(dir_path, f"Sharpened_{file_name}")
+            sharpened_image_path = os.path.join(dir_path, f"Sharpened_{file_name}")
 
             # 先鋭化画像保存処理
-            os.makedirs(os.path.dirname(output_path), exist_ok=True)
-            cv2.imwrite(output_path, result)
+            os.makedirs(os.path.dirname(sharpened_image_path), exist_ok=True)
+            cv2.imwrite(sharpened_image_path, result)
 
-            return output_path
+            return sharpened_image_path
 
         except FileNotFoundError as e:
             print("Error:", e)
@@ -69,6 +69,6 @@ class ImageProcessor:
 #     sharpened_image = ImageProcessor.sharpen_image(args.input_path)
 
 #     if sharpened_image:
-#         print(f"先鋭化完了。結果は {output_path} に保存しています。")
+#         print(f"先鋭化完了。結果は {sharpened_image_path} に保存しています。")
 #     else:
 #         print("先鋭化失敗。")
