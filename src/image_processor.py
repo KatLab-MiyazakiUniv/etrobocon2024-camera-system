@@ -43,7 +43,8 @@ class ImageProcessor:
             # 出力パスの生成
             dir_path = os.path.dirname(image_path)
             file_name = os.path.basename(image_path)
-            sharpened_image_path = os.path.join(dir_path, f"Sharpened_{file_name}")
+            sharpened_image_path = os.path.join(dir_path,
+                                                f"Sharpened_{file_name}")
 
             # 先鋭化画像保存処理
             os.makedirs(os.path.dirname(sharpened_image_path), exist_ok=True)
