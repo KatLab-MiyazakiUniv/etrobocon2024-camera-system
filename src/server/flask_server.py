@@ -250,4 +250,4 @@ if __name__ == "__main__":
         ip = connect_interface.getsockname()[0]
         connect_interface.close()
 
-    app.run(host=ip, port=8000)
+    app.run(host=ip, port=8000, threaded=True)
